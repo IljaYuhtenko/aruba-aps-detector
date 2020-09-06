@@ -3,7 +3,7 @@ import yaml
 import getpass
 from netmiko import ConnectHandler
 import re
-import logging
+import os.path
 
 
 def parse_line(line):
@@ -96,12 +96,17 @@ while i < len(lines):
     ap = parse_line(lines[i])
     found = find_aruba(aps, ap)
     if found != -1:
+        print(f"Found AP num. {found + 1}")
         aps[found]["mac"] = ap["mac"]
         aps[found]["name"] = ap["name"]
     i += 1
 
 # Last one, we print our results to file
-with open("found.txt", 'x') as f:
+if os.path.exists("found.txt"):
+    mode = 'w'
+else:
+    mode = 'x'
+with open("found.txt", mode) as f:
     writer = csv.DictWriter(f, fieldnames=list(aps[0].keys()), quoting=csv.QUOTE_MINIMAL, delimiter=";")
     for ap in aps:
         writer.writerow(ap)
