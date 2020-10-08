@@ -102,11 +102,11 @@ while i < len(lines):
     i += 1
 
 # Last one, we print our results to file
-if os.path.exists("found.txt"):
+if os.path.exists("found.csv"):
     mode = 'w'
 else:
     mode = 'x'
-with open("found.txt", mode) as f:
+with open("found.csv", mode) as f:
     writer = csv.DictWriter(f, fieldnames=list(aps[0].keys()), quoting=csv.QUOTE_MINIMAL, delimiter=";")
     for ap in aps:
         writer.writerow(ap)
